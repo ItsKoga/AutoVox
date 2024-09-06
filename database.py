@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
+
 import os
 
 def create_connection():
@@ -8,10 +9,10 @@ def create_connection():
     connection = None
     try:
         connection = mysql.connector.connect(
-            host=os.getenv("DB_HOST"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASS"),
-            database=os.getenv("DB_NAME")
+            host=os.getenv('DB_HOST'),
+            user=os.getenv('DB_USER'),
+            passwd=os.getenv('DB_PASS'),
+            database=os.getenv('DB_NAME')
         )
     except Error as e:
         return e
@@ -43,6 +44,18 @@ def execute_read_query(query):
     except Error as e:
         close_connection(connection)
         return e
+    
+def check_database():
+    connection = create_connection()
+    # Check if the database is connected
+    try:
+        if connection.is_connected():
+            close_connection(connection)
+            return True
+        else:
+            return False
+    except:
+        return False
     
 def close_connection(connection):
     # Close the connection to the MySQL database
