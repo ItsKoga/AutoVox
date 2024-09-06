@@ -9,5 +9,11 @@
     "command_not_found_title": "Command not found",
     "command_not_found": "The command `{command}` was not found. If you think this is an error, please contact the AutoVox Team. You can join the support server [here](https://discord.gg/3hDpnuuBJA).",
     "error_report_title": "Report",
-    "error_report": "Please report this error to the AutoVox team. You can join the support server [here](https://discord.gg/3hDpnuuBJA)."
+    "error_report": "Please report this error to the AutoVox team. You can join the support server [here](https://discord.gg/3hDpnuuBJA).",
+    "standard_role_already_added_title": "Standard role already added",
+    "standard_role_already_added": "{role} is already a standard role.",
+    "standard_role_not_added_title": "Standard role not added",
+    "standard_role_not_added": "{role} is not a standard role.",
+    "standard_roles_limit_reached_title": "Standard roles limit reached",
+    "standard_roles_limit_reached": "The limit of standard roles has been reached. You can only have {limit} standard roles."
 }
