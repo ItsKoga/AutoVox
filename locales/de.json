@@ -7,7 +7,7 @@
     "standard_roles_list": "Die Standardrollen sind: {roles}",
     "no_standard_roles": "Es sind keine Standardrollen festgelegt.",
     "command_not_found_title": "Befehl nicht gefunden.",
-    "command_not_found": "Der Befehl {command} wurde nicht gefunden. Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie bitte das AutoVox-Team. Sie können dem Support-Server [hier](https://discord.gg/8HbjJBGWBd) beitreten.",
+    "command_not_found": "Der Befehl `{command}` wurde nicht gefunden. Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie bitte das AutoVox-Team. Sie können dem Support-Server [hier](https://discord.gg/3hDpnuuBJA) beitreten.",
     "error_report_title": "Report",
-    "error_report": "Bitte melden Sie diesen Fehler dem AutoVox-Team. Sie können dem Support-Server [hier](https://discord.gg/8HbjJBGWBd) beitreten."
+    "error_report": "Bitte melden Sie diesen Fehler dem AutoVox-Team. Sie können dem Support-Server [hier](https://discord.gg/3hDpnuuBJA) beitreten."
 }

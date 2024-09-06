@@ -150,7 +150,6 @@ if __name__ == "__main__":
         logger.log("Starting Bot...", LogTypes.SYSTEM)
         TOKEN = os.getenv('TOKEN')  # Ensure that the TOKEN is loaded from the environment variables
         asyncio.run(bot.start(TOKEN))
-        logger.log("Bot has started", LogTypes.SUCCESS)
     except KeyboardInterrupt:
         logger.log("Shutdown signal received", LogTypes.SYSTEM)
         loop = asyncio.get_event_loop()
