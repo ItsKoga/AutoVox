@@ -4,7 +4,7 @@
     "standard_role_removed_title": "Standard Rolle entfernt",
     "standard_role_removed": "{role} wurde aus den Standardrollen entfernt.",
     "standard_roles_list_title": "Liste der Standardrollen",
-    "standard_roles_list": "Die Standardrollen sind: {roles}",
+    "standard_roles_list": "Die Standardrollen sind: \n{roles}",
     "no_standard_roles": "Es sind keine Standardrollen festgelegt.",
     "command_not_found_title": "Befehl nicht gefunden.",
     "command_not_found": "Der Befehl `{command}` wurde nicht gefunden. Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie bitte das AutoVox-Team. Sie können dem Support-Server [hier](https://discord.gg/3hDpnuuBJA) beitreten.",
