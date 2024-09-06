@@ -2,6 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 import datetime
+import os
 
 class LogColors:
     """Colors"""
@@ -58,7 +59,11 @@ class Logger:
         log_file_path = f"logs/{date}.log"
 
         # File and console handler
-        file_handler = RotatingFileHandler(log_file_path, maxBytes=5000000, backupCount=2)
+        try:
+            file_handler = RotatingFileHandler(log_file_path, maxBytes=5000000, backupCount=2)
+        except FileNotFoundError:
+            os.makedirs("logs")
+            file_handler = RotatingFileHandler(log_file_path, maxBytes=5000000, backupCount=2)
         console_handler = logging.StreamHandler()
         if type == LogTypes.NORMAL:
             file_handler.setFormatter(logging.Formatter(f"[%(asctime)s] [{self.type}] %(message)s", datefmt='%H:%M:%S'))
