@@ -63,7 +63,7 @@ async def on_interaction(interaction):
     # Check if the interaction is a command
     if interaction.type == discord.InteractionType.application_command:
         # Ckeck if command is registered
-        if not bot.get_command(name):
+        if not bot.get_application_command(name):
             logger.log(f"Command {name} not found", LogTypes.ERROR)
             embed = discord.Embed(title=translation.get_translation(interaction.user.id, "command_not_found_title"), description=translation.get_translation(interaction.user.id, "command_not_found", command=name), color=discord.Color.red())
             embed.set_footer(text="Made with ❤ by the AutoVox team")
