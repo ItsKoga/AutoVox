@@ -21,13 +21,13 @@ class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    group = SlashCommandGroup(name="settings", description="Manage the bot's settings")
+    stardardRolesGroup = SlashCommandGroup(name="standard_roles", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
 
     ######################################################
     # Standard Roles
     ######################################################
-    @group.command(name="add_standard_role", description="Add a standard role to the guild")
-    async def add_standard_role(self, ctx, role: discord.Role):
+    @stardardRolesGroup.command(name="add", description="Add a standard role to the guild")
+    async def add(self, ctx, role: discord.Role):
         # Add a standard role to the guild
         logger.log(f"Adding standard role {role.name}({role.id}) to {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
         database.execute_query(f"INSERT INTO standard_roles (guild_id, role_id) VALUES ({ctx.guild.id}, {role.id})")
@@ -35,8 +35,8 @@ class Settings(commands.Cog):
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
 
-    @group.command(name="remove_standard_role", description="Remove a standard role from the guild")
-    async def remove_standard_role(self, ctx, role: discord.Role):
+    @stardardRolesGroup.command(name="remove", description="Remove a standard role from the guild")
+    async def remove(self, ctx, role: discord.Role):
         # Remove a standard role from the guild
         logger.log(f"Removing standard role {role.name}({role.id}) from {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
         database.execute_query(f"DELETE FROM standard_roles WHERE guild_id={ctx.guild.id} AND role_id={role.id}")
@@ -44,8 +44,8 @@ class Settings(commands.Cog):
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
 
-    @group.command(name="list_standard_roles", description="List all standard roles in the guild")
-    async def list_standard_roles(self, ctx):
+    @stardardRolesGroup.command(name="list", description="List all standard roles in the guild")
+    async def list(self, ctx):
         # List all standard roles in the guild
         logger.log(f"Listing standard roles in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
         roles = database.execute_read_query(f"SELECT role_id FROM standard_roles WHERE guild_id={ctx.guild.id}")

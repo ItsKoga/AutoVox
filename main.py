@@ -13,6 +13,7 @@ from log_helper import LogTypes
 import database
 
 import config
+import translation
 
 # Initialize bot with all intents
 bot = commands.Bot(intents=discord.Intents.all())
@@ -29,8 +30,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     # Global error handler for commands
-    embed = discord.Embed(title="An error occurred", description=f"```{error}```", color=discord.Color.red())
-    embed.add_field(name="Report", value="Please report this error to the AutoVox team. You can join the support server [here](https://discord.gg/8HbjJBGWBd)")
+    embed = discord.Embed(title=translation.get_translation(ctx.author.id, "error_report_title"), description=translation.get_translation(ctx.author.id, "error_report", command=ctx.command.name), color=discord.Color.red())
     embed.set_footer(text="Made with ❤ by the AutoVox team")
     ctx.response.send_message(f"An error occurred: {error}", LogTypes.ERROR)
 
@@ -60,8 +60,19 @@ async def on_interaction(interaction):
         database.execute_query(f"INSERT INTO users (id) VALUES ({interaction.user.id})")
         logger.log(f"Added user {interaction.user.name}({interaction.user.id}) to the database", LogTypes.INFO)
 
-    # Process the interaction
-    await bot.process_application_commands(interaction)
+    # Check if the interaction is a command
+    if interaction.type == discord.InteractionType.application_command:
+        # Ckeck if command is registered
+        if not bot.get_command(name):
+            logger.log(f"Command {name} not found", LogTypes.ERROR)
+            embed = discord.Embed(title=translation.get_translation(interaction.user.id, "command_not_found_title"), description=translation.get_translation(interaction.user.id, "command_not_found", command=name), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await interaction.response.send_message(embed=embed)
+            return
+        
+
+        # Process the interaction
+        await bot.process_application_commands(interaction)
 
     
 
