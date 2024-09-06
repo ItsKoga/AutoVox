@@ -15,5 +15,7 @@
     "standard_role_not_added_title": "Standard role not added",
     "standard_role_not_added": "{role} is not a standard role.",
     "standard_roles_limit_reached_title": "Standard roles limit reached",
-    "standard_roles_limit_reached": "The limit of standard roles has been reached. You can only have {limit} standard roles."
+    "standard_roles_limit_reached": "The limit of standard roles has been reached. You can only have {limit} standard roles.",
+    "language_changed_title": "Language changed",
+    "language_changed": "The language has been changed to {language}."
 }

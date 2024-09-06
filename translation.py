@@ -1,4 +1,5 @@
 import json
+import os
 
 import database
 
@@ -27,3 +28,10 @@ def get_translation(id, key, **kwargs):
 
     translation = translate(language_code, key)
     return replace_placeholders(translation, **kwargs)
+
+def get_languages():
+    languages = []
+    for file in os.listdir("locales"):
+        if file.endswith(".json"):
+            languages.append(file[:-5])
+    return languages

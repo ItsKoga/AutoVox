@@ -23,11 +23,14 @@ class Settings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    stardardRolesGroup = SlashCommandGroup(name="standard_roles", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
+    languages = translation.get_languages()
+
 
     ######################################################
     # Standard Roles
     ######################################################
+    stardardRolesGroup = SlashCommandGroup(name="standard_roles", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
+
     @stardardRolesGroup.command(name="add", description="Add a standard role to the guild")
     async def add(self, ctx, role: discord.Role):
         # Check if the role is already a standard role
@@ -82,7 +85,14 @@ class Settings(commands.Cog):
         await ctx.response.send_message(embed=embed)
 
 
-
+    @slash_command(name="language", description="Change the bot's language")
+    async def language(self, ctx, language: Option(str, "The language you want to use", choices=languages)): # type: ignore
+        # Change the bot's language
+        logger.log(f"Changing language to {language} for {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        database.execute_query(f"UPDATE users SET language_code='{language}' WHERE id={ctx.user.id}")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "language_changed_title"), description=translation.get_translation(ctx.user.id, "language_changed", language=language), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
 
 
 def setup(bot):
