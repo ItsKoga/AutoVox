@@ -22,7 +22,7 @@ class StandardRoles(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         # When a member joins the guild
-        logger.log(f"Member joined: {member.name}({member.id}) on {member.guild.name}({member.guild.id})", log_helper.LogTypes.INFO)
+        logger.log(f"Member joined: {member.name}({member.id}) on {member.guild.name}({member.guild.id})", log_helper.LogTypes.USER_ACTION)
         # Get the guild's standard roles
         standardRoles = database.execute_read_query(f"SELECT * FROM standard_roles WHERE guild_id = {member.guild.id}")
         # load all standard roles for the guild
@@ -31,7 +31,7 @@ class StandardRoles(commands.Cog):
         for role in guild.roles:
             if role.id in standardRoles:
                 await member.add_roles(role)
-                logger.log(f"Added role {role.name}({role.id}) to {member.name}({member.id})", log_helper.LogTypes.INFO)
+                logger.log(f"Added role {role.name}({role.id}) to {member.name}({member.id})")
         logger.log(f"Added standard roles to {member.name}({member.id})", log_helper.LogTypes.INFO)
 
 
