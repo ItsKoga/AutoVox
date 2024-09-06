@@ -1,3 +1,9 @@
 {
-    
+    "standard_role_added_title": "Standard Rolle hinzugefügt",
+    "standard_role_added": "{role} wurde den Standardrollen hinzugefügt.",
+    "standard_role_removed_title": "Standard Rolle entfernt",
+    "standard_role_removed": "{role} wurde aus den Standardrollen entfernt.",
+    "standard_roles_list_title": "Liste der Standardrollen",
+    "standard_roles_list": "Die Standardrollen sind: {roles}",
+    "no_standard_roles": "Es sind keine Standardrollen festgelegt."
 }
