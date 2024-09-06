@@ -16,7 +16,11 @@ def translate(language_code, key):
     try:
         return translation[key]
     except:
-        return "Translation not found"
+        english_translation = load_translation("en")
+        try:
+            return english_translation[key]
+        except:
+            return "Text not found"
     
 def replace_placeholders(translation, **kwargs):
     for key, value in kwargs.items():
