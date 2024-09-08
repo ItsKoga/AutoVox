@@ -24,6 +24,7 @@ def translate(language_code, key):
     
 def replace_placeholders(translation, **kwargs):
     for key, value in kwargs.items():
+        value = str(value)
         translation = translation.replace(f"{{{key}}}", value)
     return translation
 

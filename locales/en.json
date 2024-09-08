@@ -38,5 +38,17 @@
     "whitelist_add_self": "You can't add yourself to the whitelist.",
     "whitelist_add_bot": "You can't add a bot to the whitelist.",
     "whitelist_list_title": "{whitelist}",
-    "whitelist_clear_success": "Your whitelist has been cleared."
+    "whitelist_clear_success": "Your whitelist has been cleared.",
+    "channel_title": "Channel",
+    "channel_not_found": "This is not a valid channel or you are not the owner of this channel.",
+    "channel_name_limit" : "The channel name limit is {limit}.",
+    "channel_name_success": "The channel name has been changed to `{name}`.",
+    "channel_name_empty": "The channel name can't be empty.",
+    "channel_user_limit": "The channel user limit is {limit}.",
+    "channel_limit_success": "The channel user limit has been changed to {limit}.",
+    "channel_user_limit_negative": "The channel user limit can't be negative.",
+    "channel_lock_already": "The channel is already locked.",
+    "channel_lock_success": "The channel has been locked.",
+    "channel_unlock_already": "The channel is already unlocked.",
+    "channel_unlock_success": "The channel has been unlocked."
 }

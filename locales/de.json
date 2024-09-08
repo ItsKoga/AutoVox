@@ -38,5 +38,17 @@
     "whitelist_add_self": "Du kannst Dich nicht selbst zu deiner Whitelist hinzufügen.",
     "whitelist_add_bot": "Du kannst keinen Bot zu deiner Whitelist hinzufügen.",
     "whitelist_list": "{whitelist}",
-    "whitelist_clear_success": "Deine Whitelist wurde geleert."
+    "whitelist_clear_success": "Deine Whitelist wurde geleert.",
+    "channel_title": "Kanal",
+    "channel_not_found": "Dies ist kein gültiger Kanal oder bist nicht der Besitzer dieses Kanals.",
+    "channel_name_limit" : "Das Kanalnamenlimit beträgt {limit}.",
+    "channel_name_success": "Der Kanalname wurde zu `{name}` geändert.",
+    "channel_name_empty": "Der Kanalname darf nicht leer sein.",
+    "channel_user_limit": "Das Kanalbenutzerlimit beträgt {limit}.",
+    "channel_limit_success": "Das Kanalbenutzerlimit wurde auf {limit} geändert.",
+    "channel_user_limit_negative": "Das Kanalbenutzerlimit kann nicht negativ sein.",
+    "channel_lock_already": "Der Kanal ist bereits gesperrt.",
+    "channel_lock_success": "Der Kanal wurde gesperrt.",
+    "channel_unlock_already": "Der Kanal ist bereits entsperrt.",
+    "channel_unlock_success": "Der Kanal wurde entsperrt."
 }

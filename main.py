@@ -52,6 +52,10 @@ async def on_guild_remove(guild):
 async def on_interaction(interaction):
     # When an interaction is invoked
     data = interaction.data
+    if interaction.type == discord.InteractionType.component:
+        await interaction.response.defer()
+        return
+
     name = data["name"]
     option_name = data["options"][0]["name"] if data["options"] else None
     logger.log(f"Interaction invoked: {name} {option_name}", LogTypes.USER_ACTION)
