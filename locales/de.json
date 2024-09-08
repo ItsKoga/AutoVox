@@ -37,5 +37,6 @@
     "whitelist_list_empty": "Deine Whitelist ist leer.",
     "whitelist_add_self": "Du kannst Dich nicht selbst zu deiner Whitelist hinzufügen.",
     "whitelist_add_bot": "Du kannst keinen Bot zu deiner Whitelist hinzufügen.",
-    "whitelist_list": "{whitelist}"
+    "whitelist_list": "{whitelist}",
+    "whitelist_clear_success": "Deine Whitelist wurde geleert."
 }

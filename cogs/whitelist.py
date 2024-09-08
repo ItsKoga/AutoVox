@@ -93,6 +93,13 @@ class Whitelist(commands.Cog):
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
 
+    @whitelistGroup.command(name="clear", description="Clear your whitelist")
+    async def whitelist_clear(self, ctx):
+        database.execute_query(f"DELETE FROM whitelist WHERE user_id = {ctx.author.id} AND guild_id = {ctx.guild.id}")
+        embed = discord.Embed(title=translation.get_translation(ctx.author.id, "whitelist_title"), description=translation.get_translation(ctx.author.id, "whitelist_clear_success"), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
 
 
 
