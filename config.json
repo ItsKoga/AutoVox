@@ -1,4 +1,5 @@
 {
     "repo_url": "https://github.com/ItsKoga/AutoVox-bot",
-    "standard_roles_limit": 10
+    "standard_roles_limit": 10,
+    "whitelist_limit" : 20
 }

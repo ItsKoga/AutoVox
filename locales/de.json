@@ -25,5 +25,17 @@
     "join_channel_request_accepted_title": "Beitrittsanfrage angenommen",
     "join_channel_request_accepted": "Du hast die Anfrage von {user} angenommen, deinem Kanal beizutreten.",
     "join_channel_request_denied_title": "Beitrittsanfrage abgelehnt",
-    "join_channel_request_denied": "Du hast die Anfrage von {user} abgelehnt, deinem Kanal beizutreten."
+    "join_channel_request_denied": "Du hast die Anfrage von {user} abgelehnt, deinem Kanal beizutreten.",
+    "custom_channels_setup_title": "Benutzerdefinierte Kanäle eingerichtet",
+    "custom_channels_setup": "Die benutzerdefinierten Kanäle wurden eingerichtet.\n Kanal erstellen : {create_channel}\n Anfragekanal : {request_channel}",
+    "whitelist_title": "Whitelist",
+    "whitelist_add_already": "{user} ist bereits auf deiner Whitelist.",
+    "whitelist_add_limit": "Das Whitelist-Limit wurde erreicht. Du kannst nur {limit} Benutzer auf deiner Whitelist haben.",
+    "whitelist_add_success": "{user} wurde zu deiner Whitelist hinzugefügt.",
+    "whitelist_remove_not_found": "{user} ist nicht auf deiner Whitelist.",
+    "whitelist_remove_success": "{user} wurde von deiner Whitelist entfernt.",
+    "whitelist_list_empty": "Deine Whitelist ist leer.",
+    "whitelist_add_self": "Du kannst Dich nicht selbst zu deiner Whitelist hinzufügen.",
+    "whitelist_add_bot": "Du kannst keinen Bot zu deiner Whitelist hinzufügen.",
+    "whitelist_list": "{whitelist}"
 }

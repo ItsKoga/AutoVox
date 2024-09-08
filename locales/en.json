@@ -26,8 +26,16 @@
     "join_channel_request_accepted": "You have accepted the request from {user} to join your channel.",
     "join_channel_request_denied_title": "Join request denied",
     "join_channel_request_denied": "You have denied the request from {user} to join your channel.",
-    "create_channel_set_title": "Create channel set",
-    "create_channel_set": "The channel has been set to {channel}.",
     "custom_channels_setup_title": "Custom channels setup",
-    "custom_channels_setup": "The custom channels have been set up.\n Create Channel : {create_channel}\n Request Channel : {request_channel}"
+    "custom_channels_setup": "The custom channels have been set up.\n Create Channel : {create_channel}\n Request Channel : {request_channel}",
+    "whitelist_title": "Whitelist",
+    "whitelist_add_already": "{user} is already on your whitelist.",
+    "whitelist_add_limit": "The whitelist limit has been reached. You can only have {limit} users on your whitelist.",
+    "whitelist_add_success": "{user} has been added to your whitelist.",
+    "whitelist_remove_not_found": "{user} is not on your whitelist.",
+    "whitelist_remove_success": "{user} has been removed from your whitelist.",
+    "whitelist_list_empty": "Your whitelist is empty.",
+    "whitelist_add_self": "You can't add yourself to the whitelist.",
+    "whitelist_add_bot": "You can't add a bot to the whitelist.",
+    "whitelist_list_title": "{whitelist}"
 }
