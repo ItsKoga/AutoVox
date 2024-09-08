@@ -140,12 +140,16 @@ class AutoVoice(commands.Cog):
             if len(customChannel.members) == 0:
                 await customChannel.delete()
                 database.execute_query(f"DELETE FROM custom_channels WHERE owner_id = {member.id}")
+                joinChannel = database.execute_read_query(f"SELECT * FROM join_channels WHERE owner_id = {member.id} AND guild_id = {guild.id}")
+                if joinChannel:
+                    joinChannel = guild.get_channel(joinChannel[0][1])
+                    await joinChannel.delete()
                 logger.log(f"User {member.name}({member.id}) left their custom channel in {guild.name}({guild.id}) and the channel was deleted", log_helper.LogTypes.INFO)
                 return
             # Set the channel owner to the first member in the channel
             channelOwner = customChannel.members[0]
             database.execute_query(f"UPDATE custom_channels SET owner_id = {channelOwner.id} WHERE owner_id = {member.id}")
-            joinChannel = database.execute_read_query(f"SELECT * FROM join_channels WHERE owner_id = {member.id}")
+            joinChannel = database.execute_read_query(f"SELECT * FROM join_channels WHERE owner_id = {member.id} AND guild_id = {guild.id}")
             if joinChannel:
                 database.execute_query(f"UPDATE join_channels SET owner_id = {channelOwner.id} WHERE owner_id = {member.id}")
             logger.log(f"User {member.name}({member.id}) left their custom channel in {guild.name}({guild.id}) and set {channelOwner.name}({channelOwner.id}) as the new owner", log_helper.LogTypes.INFO)
