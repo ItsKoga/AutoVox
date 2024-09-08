@@ -17,5 +17,13 @@
     "standard_roles_limit_reached_title": "Standardrollenlimit erreicht",
     "standard_roles_limit_reached": "Das Limit der Standardrollen wurde erreicht. Sie können nur {limit} Standardrollen haben.",
     "language_changed_title": "Sprache geändert",
-    "language_changed": "Die Sprache wurde auf {language} geändert."
+    "language_changed": "Die Sprache wurde auf {language} geändert.",
+    "join_channel_request_title": "Beitrittskanal anfordern",
+    "join_channel_request": "{user}, möchte Ihrem Kanal beitreten. Möchten Sie sie zulassen?",
+    "accept": "Akzeptieren",
+    "deny": "Ablehnen",
+    "join_channel_request_accepted_title": "Beitrittsanfrage angenommen",
+    "join_channel_request_accepted": "Du hast die Anfrage von {user} angenommen, deinem Kanal beizutreten.",
+    "join_channel_request_denied_title": "Beitrittsanfrage abgelehnt",
+    "join_channel_request_denied": "Du hast die Anfrage von {user} abgelehnt, deinem Kanal beizutreten."
 }

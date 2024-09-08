@@ -17,5 +17,17 @@
     "standard_roles_limit_reached_title": "Standard roles limit reached",
     "standard_roles_limit_reached": "The limit of standard roles has been reached. You can only have {limit} standard roles.",
     "language_changed_title": "Language changed",
-    "language_changed": "The language has been changed to {language}."
+    "language_changed": "The language has been changed to {language}.",
+    "join_channel_request_title": "Join channel request",
+    "join_channel_request": "{user}, want to join your channel. Do you want to allow them?",
+    "accept": "Accept",
+    "deny": "Deny",
+    "join_channel_request_accepted_title": "Join request accepted",
+    "join_channel_request_accepted": "You have accepted the request from {user} to join your channel.",
+    "join_channel_request_denied_title": "Join request denied",
+    "join_channel_request_denied": "You have denied the request from {user} to join your channel.",
+    "create_channel_set_title": "Create channel set",
+    "create_channel_set": "The channel has been set to {channel}.",
+    "custom_channels_setup_title": "Custom channels setup",
+    "custom_channels_setup": "The custom channels have been set up.\n Create Channel : {create_channel}\n Request Channel : {request_channel}"
 }

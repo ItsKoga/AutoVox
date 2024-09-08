@@ -95,5 +95,49 @@ class Settings(commands.Cog):
         await ctx.response.send_message(embed=embed)
 
 
+    ######################################################
+    # Custom Channels
+    ######################################################
+    customChannelsGroup = SlashCommandGroup(name="custom_channels", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
+
+    @customChannelsGroup.command(name="setup", description="Setup the bot's custom channels")
+    async def setup(self, ctx):
+        # Create a category for the custom channels
+        logger.log(f"Setting up custom channels in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        category = await ctx.guild.create_category("Custom Channels")
+
+        # Create a channel where the bot will create channels
+        create_channel = await ctx.guild.create_voice_channel("Create Channel", category=category)
+        database.execute_query(f"INSERT INTO settings (guild_id, setting_name, setting_value) VALUES ({ctx.guild.id}, 'create_channel', {create_channel.id})")
+        logger.log(f"Setting create channel to {create_channel.name}({create_channel.id}) in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+
+        # Create a channel where the bot will send requests
+        request_channel = await ctx.guild.create_text_channel("Request Channel", category=category)
+        database.execute_query(f"INSERT INTO settings (guild_id, setting_name, setting_value) VALUES ({ctx.guild.id}, 'request_channel', {request_channel.id})")
+        logger.log(f"Setting request channel to {request_channel.name}({request_channel.id}) in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "custom_channels_setup_title"), description=translation.get_translation(ctx.user.id, "custom_channels_setup", create_channel=create_channel.mention, request_channel=request_channel.mention), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+        logger.log(f"Custom channels setup in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.SUCCESS)
+
+    @customChannelsGroup.command(name="delete", description="Delete the bot's custom channels")
+    async def delete(self, ctx):
+        # Delete the category for the custom channels
+        logger.log(f"Deleting custom channels in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        create_channel = int(database.execute_read_query(f"SELECT * FROM settings WHERE guild_id = {ctx.guild.id} AND setting_name = 'create_channel'")[0][2])
+        create_channel = ctx.guild.get_channel(create_channel)
+        request_channel = int(database.execute_read_query(f"SELECT * FROM settings WHERE guild_id = {ctx.guild.id} AND setting_name = 'request_channel'")[0][2])
+        request_channel = ctx.guild.get_channel(request_channel)
+        category = create_channel.category
+        for channel in category.channels:
+            await channel.delete()
+        await category.delete()
+        logger.log(f"Custom channels deleted in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.SUCCESS)
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "custom_channels_deleted_title"), description=translation.get_translation(ctx.user.id, "custom_channels_deleted"), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+
 def setup(bot):
     bot.add_cog(Settings(bot))

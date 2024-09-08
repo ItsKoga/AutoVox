@@ -134,6 +134,9 @@ async def create_database():
     database.execute_query("CREATE TABLE IF NOT EXISTS standard_roles (guild_id BIGINT, role_id BIGINT)")
     database.execute_query("CREATE TABLE IF NOT EXISTS settings (guild_id BIGINT, setting_name TEXT, setting_value TEXT)")
     database.execute_query("CREATE TABLE IF NOT EXISTS users (id BIGINT, language_code TEXT DEFAULT 'en')")
+    database.execute_query("CREATE TABLE IF NOT EXISTS custom_channels (owner_id BIGINT, channel_id BIGINT, guild_id BIGINT)")
+    database.execute_query("CREATE TABLE IF NOT EXISTS join_channels (owner_id BIGINT, channel_id BIGINT, guild_id BIGINT)")
+    database.execute_query("CREATE TABLE IF NOT EXISTS whitelist (guild_id BIGINT, user_id BIGINT, whitelisted_user_id BIGINT)")
     logger.log("Database is ready", LogTypes.SUCCESS)
 
 # Main entry point
