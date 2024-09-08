@@ -177,7 +177,7 @@ class AutoVoice(commands.Cog):
                     self.owner = channelOwner
                     self.channel = after.channel
                     self.requestedChannel = requestedChannel
-                    self.timeout = 6
+                    self.timeout = 300
                 
                 async def on_timeout(self):
                     logger.log(f"User {member.name}({member.id}) did not respond to the join channel request from {channelOwner.name}({channelOwner.id}) in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
