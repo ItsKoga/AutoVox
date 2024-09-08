@@ -37,7 +37,7 @@ class AutoVoice(commands.Cog):
                 guilds.append(int(channel[2]))
         for channel in joinChannels:
             if channel[1] not in guilds:
-                guilds.append(int(channel[1]))
+                guilds.append(int(channel[2]))
 
         # Create a list with all the guild and channel ids
         guildsList = {}
@@ -51,7 +51,7 @@ class AutoVoice(commands.Cog):
                     guildsList[guild]["join"].append(int(channel[1]))
 
         for guildToCheck in guildsList:
-            guild = self.bot.get_guild(guild)
+            guild = self.bot.get_guild(int(guildToCheck))
             logger.log(f"Checking channels in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
             channels = guild.voice_channels
             channelIds = [channel.id for channel in channels]
@@ -114,7 +114,7 @@ class AutoVoice(commands.Cog):
 
         customChannels = database.execute_read_query(f"SELECT * FROM custom_channels WHERE guild_id = {member.guild.id}")
         customChannelOwners = [int(channel[0]) for channel in customChannels]
-        customChannels = [channel[1] for channel in customChannels]
+        customChannels = [int(channel[1]) for channel in customChannels]
 
         customCatagory = createChannel.category
 
@@ -151,43 +151,61 @@ class AutoVoice(commands.Cog):
             logger.log(f"User {member.name}({member.id}) left their custom channel in {guild.name}({guild.id}) and set {channelOwner.name}({channelOwner.id}) as the new owner", log_helper.LogTypes.INFO)
             return
         
+        if after.channel == None:
+            return
+        
         if after.channel.id in joinChannels:
             logger.log(f"User {member.name}({member.id}) joined a join channel in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
             joinChannel = joinChannels[joinChannels.index(after.channel.id)]
             joinChannel = guild.get_channel(joinChannel)
-            channelOwner = joinChannel.members[0]
+            channelOwner = database.execute_read_query(f"SELECT * FROM join_channels WHERE channel_id = {joinChannel.id}")[0][0]
+            channelOwner = guild.get_member(channelOwner)
+            requestedChannel = database.execute_read_query(f"SELECT * FROM custom_channels WHERE owner_id = {channelOwner.id} AND guild_id = {guild.id}")
+            requestedChannel = guild.get_channel(requestedChannel[0][1])
             whitelist = database.execute_read_query(f"SELECT * FROM whitelist WHERE guild_id = {guild.id} AND user_id = {channelOwner.id} AND whitelisted_user_id = {member.id}")
             if whitelist:
-                await member.move_to(joinChannel)
+                await member.move_to(requestedChannel)
                 await joinChannel.set_permissions(member, connect=True)
                 logger.log(f"User {member.name}({member.id}) joined {channelOwner.name}({channelOwner.id})'s channel in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
                 return
-            embed = discord.Embed(title=translation.get_translation(channelOwner.id, "join_channel_request_title"), description=translation.get_translation(channelOwner.id, "join_channel_request", member=member.mention), color=discord.Color.green())
+            embed = discord.Embed(title=translation.get_translation(channelOwner.id, "join_channel_request_title"), description=translation.get_translation(channelOwner.id, "join_channel_request", user=member.mention), color=discord.Color.purple())
             embed.set_footer(text="Made with ❤ by the AutoVox team")
             # Add the accept and deny buttons
-            class View(discord.ui.View(timeout=120)):
+            class View(discord.ui.View):
                 def __init__(self):
                     super().__init__()
                     self.owner = channelOwner
-
-                def on_timeout(self):
-                    for child in self.children:
-                        child.disabled = True
+                    self.channel = after.channel
+                    self.requestedChannel = requestedChannel
+                    self.timeout = 6
+                
+                async def on_timeout(self):
+                    logger.log(f"User {member.name}({member.id}) did not respond to the join channel request from {channelOwner.name}({channelOwner.id}) in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
+                    self.disable_all_items()
+                    await self.message.edit(view=self)
+                    if guild.get_member(member.id).voice.channel == self.channel:
+                        await member.move_to(None)
+                    
 
                 @discord.ui.button(label=translation.get_translation(channelOwner.id, "accept"), style=discord.ButtonStyle.green)
                 async def accept(self, button, interaction):
                     if interaction.user.id != self.owner.id:
                         return
-                    if guild.get_member(member.id).voice.channel == after.channel:
-                        await member.move_to(joinChannel)
-                        await joinChannel.set_permissions(member, connect=True)
+                    user = await interaction.user.guild.fetch_member(member.id)
+                    voiceChannel = user.voice.channel
+                    if voiceChannel == self.channel:
+                        await member.move_to(self.requestedChannel)
+                        await requestedChannel.set_permissions(member, connect=True)
                     else:
                         return
                     # Edit the embed to show that the request was accepted
-                    embed.title = translation.get_translation(channelOwner.id, "join_channel_request_accepted_title")
-                    embed.description = translation.get_translation(channelOwner.id, "join_channel_request_accepted", member=member.mention)
-                    await interaction.response.edit_message(embed=embed)
-                    logger.log(f"User {member.name}({member.id}) joined {channelOwner.name}({channelOwner.id})'s channel in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
+                    embed.color = discord.Color.green()
+                    embed.title = translation.get_translation(self.owner.id, "join_channel_request_accepted_title")
+                    embed.description = translation.get_translation(self.owner.id, "join_channel_request_accepted", user=member.mention)
+                    for child in self.children:
+                        child.disabled = True
+                    await interaction.edit_original_response(embed=embed, view=self)
+                    logger.log(f"User {member.name}({member.id}) joined {self.owner.name}({self.owner.id})'s channel in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
 
                 @discord.ui.button(label=translation.get_translation(channelOwner.id, "deny"), style=discord.ButtonStyle.red)
                 async def deny(self, button, interaction):
@@ -198,10 +216,13 @@ class AutoVoice(commands.Cog):
                     else:
                         return
                     # Edit the embed to show that the request was denied
-                    embed.title = translation.get_translation(channelOwner.id, "join_channel_request_denied_title")
-                    embed.description = translation.get_translation(channelOwner.id, "join_channel_request_denied", member=member.mention)
-                    await interaction.response.edit_message(embed=embed)
-                    logger.log(f"User {member.name}({member.id}) denied to join {channelOwner.name}({channelOwner.id})'s channel in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
+                    embed.color = discord.Color.red()
+                    embed.title = translation.get_translation(self.owner.id, "join_channel_request_denied_title")
+                    embed.description = translation.get_translation(self.owner.id, "join_channel_request_denied", user=member.mention)
+                    for child in self.children:
+                        child.disabled = True
+                    await interaction.edit_original_response(embed=embed, view=self)
+                    logger.log(f"User {member.name}({member.id}) denied to join {self.owner.name}({self.owner.id})'s channel in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
 
             await requestChannel.send(channelOwner.mention,embed=embed, view=View())
 
