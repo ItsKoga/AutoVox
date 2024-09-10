@@ -48,6 +48,8 @@ class AutoThread(commands.Cog):
             # Create the Thread
             thread = await message.create_thread(name=threadTitle)
 
+            logger.log(f"Created thread {thread.id} in {message.guild.id}")
+
 
 def setup(bot):
     bot.add_cog(AutoThread(bot))
