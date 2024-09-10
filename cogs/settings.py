@@ -200,14 +200,14 @@ class Settings(commands.Cog):
         logger.log(f"Listing auto threads in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
         threads = database.execute_read_query(f"SELECT channel_id, thread_title FROM auto_threads WHERE guild_id={ctx.guild.id}")
         if not threads:
-            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_threads"), description=translation.get_translation(ctx.user.id, "no_auto_threads"), color=discord.Color.red())
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "no_auto_threads"), color=discord.Color.red())
             embed.set_footer(text="Made with ❤ by the AutoVox team")
             await ctx.response.send_message(embed=embed)
             return
         thread_mentions = []
         for thread in threads:
             thread_mentions.append(f"<#{thread[0]}>" + " - " + thread[1])
-        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_threads"), description=translation.get_translation(ctx.user.id, "auto_threads_list", threads=", \n".join(thread_mentions)), color=discord.Color.green())
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_threads_list", threads=", \n".join(thread_mentions)), color=discord.Color.green())
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
 
