@@ -7,6 +7,8 @@ import os
 import sys	
 import subprocess
 
+from mysql.connector import Error
+
 import log_helper
 from log_helper import LogTypes
 
@@ -148,8 +150,9 @@ async def create_database():
 if __name__ == "__main__":
     logger.log("Starting AutoVox...", LogTypes.SYSTEM)
     logger.log("Checking database connection...", LogTypes.SYSTEM)
-    if not database.check_database():
-        logger.log("Failed to connect to the database. Exiting...", LogTypes.ERROR)
+    check = database.check_database()
+    if check == Error:
+        logger.log(f"Database connection failed: {check}", LogTypes.ERROR)  
         sys.exit(1)
     logger.log("Database connection successful", LogTypes.SUCCESS)
     load_dotenv()

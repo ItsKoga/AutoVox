@@ -53,7 +53,7 @@ def check_database():
             close_connection(connection)
             return True
         else:
-            return False
+            return connection
     except:
         return False
     
