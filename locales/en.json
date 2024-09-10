@@ -50,5 +50,16 @@
     "channel_lock_already": "The channel is already locked.",
     "channel_lock_success": "The channel has been locked.",
     "channel_unlock_already": "The channel is already unlocked.",
-    "channel_unlock_success": "The channel has been unlocked."
+    "channel_unlock_success": "The channel has been unlocked.",
+    "auto_thread": "Auto Thread",
+    "auto_thread_already_added": "Your already add {channel} to auto threads.",
+    "auto_threads_limit_reached": "The limit of auto threads has been reached. You can only have {limit} auto threads.",
+    "auto_thread_not_text_channel": "This is not a text channel.",
+    "auto_thread_added": "{channel} has been added to auto threads.",
+    "auto_thread_not_added": "{channel} is not added to auto threads.",
+    "auto_thread_removed": "{channel} has been removed from auto threads.",
+    "no_auto_threads": "There are no auto threads set.",
+    "auto_threads_list": "The auto threads are: \n{channels}",
+    "auto_thread_invalid_title": "The Title is invalid."
+
 }

@@ -139,5 +139,77 @@ class Settings(commands.Cog):
         await ctx.response.send_message(embed=embed)
 
 
+
+    ######################################################
+    # Auto Threads
+    ######################################################
+
+    autoThreadsGroup = SlashCommandGroup(name="auto_threads", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
+
+    @autoThreadsGroup.command(name="add", description="Add an auto thread to the guild")
+    async def add(self, ctx, channel: discord.TextChannel, title: str):
+        # Check if the channel is already an auto thread
+        if database.execute_read_query(f"SELECT * FROM auto_threads WHERE guild_id={ctx.guild.id} AND channel_id={channel.id}"):
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_already_added", channel=channel.mention), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Check if the auto thread limit has been reached
+        if len(database.execute_read_query(f"SELECT * FROM auto_threads WHERE guild_id={ctx.guild.id}")) >= config.load_value("auto_threads_limit"):
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_threads"), description=translation.get_translation(ctx.user.id, "auto_threads_limit_reached", limit=config.load_value("auto_threads_limit")), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Check if the Channel is a Text Channel
+        if not channel.type == discord.ChannelType.text:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_not_text_channel", channel=channel.mention), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Check for invalid title
+        if "'" in title:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_invalid_title", title=title), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Add an auto thread to the guild
+        logger.log(f"Adding auto thread {channel.name}({channel.id}) to {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        database.execute_query(f"INSERT INTO auto_threads (guild_id, channel_id, thread_title) VALUES ({ctx.guild.id}, {channel.id}, '{title}')")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_added", channel=channel.mention, title=title), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+    @autoThreadsGroup.command(name="remove", description="Remove an auto thread from the guild")
+    async def remove(self, ctx, channel: discord.TextChannel):
+        # Check if the channel is not an auto thread
+        if not database.execute_read_query(f"SELECT * FROM auto_threads WHERE guild_id={ctx.guild.id} AND channel_id={channel.id}"):
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_not_added", channel=channel.mention), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Remove an auto thread from the guild
+        logger.log(f"Removing auto thread {channel.name}({channel.id}) from {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        database.execute_query(f"DELETE FROM auto_threads WHERE guild_id={ctx.guild.id} AND channel_id={channel.id}")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_removed", channel=channel.mention), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+    @autoThreadsGroup.command(name="list", description="List all auto threads in the guild")
+    async def list(self, ctx):
+        # List all auto threads in the guild
+        logger.log(f"Listing auto threads in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        threads = database.execute_read_query(f"SELECT channel_id, thread_title FROM auto_threads WHERE guild_id={ctx.guild.id}")
+        if not threads:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_threads"), description=translation.get_translation(ctx.user.id, "no_auto_threads"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        thread_mentions = []
+        for thread in threads:
+            thread_mentions.append(f"<#{thread[0]}>" + " - " + thread[1])
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_threads"), description=translation.get_translation(ctx.user.id, "auto_threads_list", threads=", \n".join(thread_mentions)), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
 def setup(bot):
     bot.add_cog(Settings(bot))

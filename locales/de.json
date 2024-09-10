@@ -50,5 +50,15 @@
     "channel_lock_already": "Der Kanal ist bereits gesperrt.",
     "channel_lock_success": "Der Kanal wurde gesperrt.",
     "channel_unlock_already": "Der Kanal ist bereits entsperrt.",
-    "channel_unlock_success": "Der Kanal wurde entsperrt."
+    "channel_unlock_success": "Der Kanal wurde entsperrt.",
+    "auto_thread": "Auto Thread",
+    "auto_thread_already_added": "Du hast {channel} bereits zu den Auto-Threads hinzugefügt.",
+    "auto_threads_limit_reached": "Das Limit der Auto-Threads wurde erreicht. Du kannst nur {limit} Auto-Threads haben.",
+    "auto_thread_not_text_channel": "Dies ist kein Textkanal.",
+    "auto_thread_added": "{channel} wurde zu den Auto-Threads hinzugefügt.",
+    "auto_thread_not_added": "{channel} wurde nicht zu den Auto-Threads hinzugefügt.",
+    "auto_thread_removed": "{channel} wurde aus den Auto-Threads entfernt.",
+    "no_auto_threads": "Es sind keine Auto-Threads festgelegt.",
+    "auto_threads_list": "Die Auto-Threads sind: \n{threads}",
+    "auto_thread_invalid_title": "Der Titel ist ungültig."
 }
