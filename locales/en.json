@@ -64,6 +64,7 @@
     "welcome_message_set": "The welcome message has been set. The Channel is {channel} and the message is {message}.",
     "welcome_message_removed": "The welcome message has been removed.",
     "welcome_message_not_set": "The welcome message is not set.",
-    "custom_channel_deleted": "The channel has been deleted."
+    "custom_channel_deleted": "The channel has been deleted.",
+    "custom_channel_not_found": "This is not a valid custom channel."
 
 }
