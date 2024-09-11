@@ -144,6 +144,7 @@ class AutoVoice(commands.Cog):
                 if joinChannel:
                     joinChannel = guild.get_channel(joinChannel[0][1])
                     await joinChannel.delete()
+                    database.execute_query(f"DELETE FROM join_channels WHERE owner_id = {member.id} AND guild_id = {guild.id}")
                 logger.log(f"User {member.name}({member.id}) left their custom channel in {guild.name}({guild.id}) and the channel was deleted", log_helper.LogTypes.INFO)
                 return
             # Set the channel owner to the first member in the channel
@@ -182,15 +183,17 @@ class AutoVoice(commands.Cog):
                     self.channel = after.channel
                     self.requestedChannel = requestedChannel
                     self.timeout = 300
+                    self.member = member
+                    self.guild = guild
                 
                 async def on_timeout(self):
-                    logger.log(f"User {member.name}({member.id}) did not respond to the join channel request from {channelOwner.name}({channelOwner.id}) in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
+                    logger.log(f"User {self.member.name}({self.member.id}) did not respond to the join channel request from {channelOwner.name}({channelOwner.id}) in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
                     self.disable_all_items()
                     await self.message.edit(view=self)
-                    member = await guild.get_member(member.id)
-                    if member.channel:
-                        if member.channel == self.channel:
-                            await member.move_to(None)
+                    self.member = self.guild.get_member(self.member.id)
+                    if member.voice:
+                        if self.member.voice.channel == self.channel:
+                            await self.member.move_to(None)
                     
 
                 @discord.ui.button(label=translation.get_translation(channelOwner.id, "accept"), style=discord.ButtonStyle.green)
