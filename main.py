@@ -25,7 +25,7 @@ logger = log_helper.Logger("Main")
 async def on_ready():
     # Set bot's presence
     await bot.change_presence(activity=discord.Game(name="AutoVox"), status=discord.Status.online)
-    logger.log("Bot is Online!", LogTypes.SUCCESS)
+    logger.log("Bot is online!", LogTypes.SUCCESS)
 
 
 @bot.event

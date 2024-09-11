@@ -187,8 +187,10 @@ class AutoVoice(commands.Cog):
                     logger.log(f"User {member.name}({member.id}) did not respond to the join channel request from {channelOwner.name}({channelOwner.id}) in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
                     self.disable_all_items()
                     await self.message.edit(view=self)
-                    if guild.get_member(member.id).voice.channel == self.channel:
-                        await member.move_to(None)
+                    member = await guild.get_member(member.id)
+                    if member.channel:
+                        if member.channel == self.channel:
+                            await member.move_to(None)
                     
 
                 @discord.ui.button(label=translation.get_translation(channelOwner.id, "accept"), style=discord.ButtonStyle.green)
