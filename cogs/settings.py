@@ -166,15 +166,13 @@ class Settings(commands.Cog):
             embed.set_footer(text="Made with ❤ by the AutoVox team")
             await ctx.response.send_message(embed=embed)
             return
-        # Check for invalid title
-        if "'" in title:
-            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_invalid_title", title=title), color=discord.Color.red())
-            embed.set_footer(text="Made with ❤ by the AutoVox team")
-            await ctx.response.send_message(embed=embed)
-            return
         # Add an auto thread to the guild
         logger.log(f"Adding auto thread {channel.name}({channel.id}) to {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
-        database.execute_query(f"INSERT INTO auto_threads (guild_id, channel_id, thread_title) VALUES ({ctx.guild.id}, {channel.id}, '{title}')")
+        # Use parameterized queries to prevent SQL injection and handle special characters
+        database.execute_query(
+            "INSERT INTO auto_threads (guild_id, channel_id, thread_title) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE thread_title=%s",
+            (ctx.guild.id, channel.id, title, title)
+        )
         embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_thread_added", channel=channel.mention, title=title), color=discord.Color.green())
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
@@ -208,6 +206,81 @@ class Settings(commands.Cog):
         for thread in threads:
             thread_mentions.append(f"<#{thread[0]}>" + " - " + thread[1])
         embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_thread"), description=translation.get_translation(ctx.user.id, "auto_threads_list", threads=", \n".join(thread_mentions)), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+
+    ######################################################
+    # Welcome Messages
+    ######################################################
+
+    welcomeGroup = SlashCommandGroup(name="welcome", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
+
+    @welcomeGroup.command(name="set", description="Set the welcome message for the guild")
+    async def set(self, ctx, title: str, message: str, channel: discord.TextChannel):
+        # Set the welcome message for the guild
+        logger.log(f"Setting welcome message in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        # Use parameterized queries to prevent SQL injection and handle special characters
+        database.execute_query(
+            "INSERT INTO welcome_messages (guild_id, title, message) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE title=%s, message=%s",
+            (ctx.guild.id, title, message, title, message)
+        )
+        database.execute_query(
+            "INSERT INTO welcome_channels (guild_id, channel_id) VALUES (%s, %s) ON DUPLICATE KEY UPDATE channel_id=%s",
+            (ctx.guild.id, channel.id, channel.id)
+        )
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "welcome_message_title"), description=translation.get_translation(ctx.user.id, "welcome_message_set", message=message, channel=channel.mention), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+    @welcomeGroup.command(name="remove", description="Remove the welcome message for the guild")
+    async def remove(self, ctx):
+        # Remove the welcome message for the guild
+        logger.log(f"Removing welcome message in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        database.execute_query(f"DELETE FROM welcome_messages WHERE guild_id={ctx.guild.id}")
+        database.execute_query(f"DELETE FROM welcome_channels WHERE guild_id={ctx.guild.id}")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "welcome_message_title"), description=translation.get_translation(ctx.user.id, "welcome_message_removed"), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+    @welcomeGroup.command(name="test", description="Test the welcome message for the guild")
+    async def test(self, ctx):
+        # Test the welcome message for the guild
+        logger.log(f"Testing welcome message in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        data = database.execute_read_query(f"SELECT * FROM welcome_messages WHERE guild_id = {ctx.guild.id}")
+        if not data:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "welcome_message_title"), description=translation.get_translation(ctx.user.id, "welcome_message_not_set"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        welcomeMessage = data[0][1]
+        welcomeMessage = welcomeMessage.replace("{user}", ctx.author.mention)
+        welcomeMessage = welcomeMessage.replace("{guild}", ctx.guild.name)
+        welcomeTitle = data[0][2]
+        channel = database.execute_read_query(f"SELECT * FROM welcome_channels WHERE guild_id = {ctx.guild.id}")
+        channel = ctx.guild.get_channel(int(channel[0][1]))
+        embed = discord.Embed(title=welcomeTitle, description=welcomeMessage, color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+
+        await channel.send(embed=embed)
+
+    @welcomeGroup.command(name="info", description="Get the welcome message for the guild")
+    async def info(self, ctx):
+        # Get the welcome message for the guild
+        logger.log(f"Getting welcome message in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        data = database.execute_read_query(f"SELECT * FROM welcome_messages WHERE guild_id = {ctx.guild.id}")
+        if not data:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "welcome_message_title"), description=translation.get_translation(ctx.user.id, "welcome_message_not_set"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        welcomeMessage = data[0][1]
+        welcomeMessage = welcomeMessage.replace("{user}", ctx.author.mention)
+        welcomeMessage = welcomeMessage.replace("{guild}", ctx.guild.name)
+        welcomeTitle = data[0][2]
+        channel = database.execute_read_query(f"SELECT * FROM welcome_channels WHERE guild_id = {ctx.guild.id}")
+        channel = ctx.guild.get_channel(int(channel[0][1]))
+        embed = discord.Embed(title=welcomeTitle, description=welcomeMessage, color=discord.Color.green())
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
 

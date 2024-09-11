@@ -60,5 +60,8 @@
     "auto_thread_removed": "{channel} wurde aus den Auto-Threads entfernt.",
     "no_auto_threads": "Es sind keine Auto-Threads festgelegt.",
     "auto_threads_list": "Die Auto-Threads sind: \n{threads}",
-    "auto_thread_invalid_title": "Der Titel ist ungültig."
+    "welcome_message_title": "Willkommensnachricht",
+    "welcome_message_set": "Die Willkommensnachricht wurde festgelegt. Der Kanal ist {channel} und die Nachricht ist {message}.",
+    "welcome_message_removed": "Die Willkommensnachricht wurde entfernt.",
+    "welcome_message_not_set": "Die Willkommensnachricht ist nicht festgelegt."
 }

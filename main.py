@@ -117,6 +117,8 @@ async def create_database():
     database.execute_query("CREATE TABLE IF NOT EXISTS join_channels (owner_id BIGINT, channel_id BIGINT, guild_id BIGINT)")
     database.execute_query("CREATE TABLE IF NOT EXISTS whitelist (guild_id BIGINT, user_id BIGINT, whitelisted_user_id BIGINT)")
     database.execute_query("CREATE TABLE IF NOT EXISTS auto_threads (guild_id BIGINT, channel_id BIGINT, thread_title TEXT)")
+    database.execute_query("CREATE TABLE IF NOT EXISTS welcome_messages (guild_id BIGINT, message TEXT, title TEXT)")
+    database.execute_query("CREATE TABLE IF NOT EXISTS welcome_channels (guild_id BIGINT, channel_id BIGINT)")
     logger.log("Database is ready", LogTypes.SUCCESS)
 
 # Main entry point

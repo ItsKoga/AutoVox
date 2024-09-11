@@ -18,12 +18,12 @@ def create_connection():
         return e
     return connection
 
-def execute_query(query):
+def execute_query(query, values=None):
     connection = create_connection()
     # Execute a query on the MySQL database
     cursor = connection.cursor()
     try:
-        cursor.execute(query)
+        cursor.execute(query, values)
         connection.commit()
         close_connection(connection)
         return True
