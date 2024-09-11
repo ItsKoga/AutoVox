@@ -33,7 +33,7 @@ async def on_command_error(ctx, error):
     # Global error handler for commands
     embed = discord.Embed(title=translation.get_translation(ctx.author.id, "error_report_title"), description=translation.get_translation(ctx.author.id, "error_report", command=ctx.command.name), color=discord.Color.red())
     embed.set_footer(text="Made with ❤ by the AutoVox team")
-    ctx.response.send_message(f"An error occurred: {error}", LogTypes.ERROR)
+    await ctx.response.send_message(f"An error occurred: {error}", LogTypes.ERROR)
 
     logger.log(f"An error occurred: {error}", LogTypes.ERROR)
 
@@ -51,7 +51,6 @@ async def on_guild_join(guild):
     embed.set_footer(text="Made with ❤ by the AutoVox team")
 
     await channel.send(embed=embed)
-
 
 
 @bot.event
@@ -88,19 +87,16 @@ async def on_interaction(interaction):
 
     # Check if the interaction is a command
     if interaction.type == discord.InteractionType.application_command:
-        # Ckeck if command is registered
+        # Check if command is registered
         if not bot.get_application_command(name):
             logger.log(f"Command {name} not found", LogTypes.ERROR)
             embed = discord.Embed(title=translation.get_translation(interaction.user.id, "command_not_found_title"), description=translation.get_translation(interaction.user.id, "command_not_found", command=name), color=discord.Color.red())
             embed.set_footer(text="Made with ❤ by the AutoVox team")
             await interaction.response.send_message(embed=embed)
             return
-        
 
         # Process the interaction
         await bot.process_application_commands(interaction)
-
-    
 
 
 @bot.event
@@ -110,7 +106,6 @@ async def restart(ctx): # can be triggered in a cog by self.bot.dispatch("restar
     await ctx.send("Restarting...")
     await bot.close()
     os.execv(sys.executable, ['python'] + sys.argv)
-
 
 
 # Load extensions (cogs) from the 'cogs' directory
@@ -124,7 +119,6 @@ async def load_extensions():
                 logger.log(f"Loaded {cog_name}", LogTypes.SUCCESS)
             except Exception as e:
                 logger.log(f"Failed to load {cog_name}: {e}", LogTypes.ERROR)
-
 
 
 async def create_database():
@@ -141,28 +135,31 @@ async def create_database():
     database.execute_query("CREATE TABLE IF NOT EXISTS welcome_channels (guild_id BIGINT, channel_id BIGINT)")
     logger.log("Database is ready", LogTypes.SUCCESS)
 
-# Main entry point
-if __name__ == "__main__":
+
+async def main():
     logger.log("Starting AutoVox...", LogTypes.SYSTEM)
     logger.log("Checking database connection...", LogTypes.SYSTEM)
     check = database.check_database()
     if check == Error:
-        logger.log(f"Database connection failed: {check}", LogTypes.ERROR)  
+        logger.log(f"Database connection failed: {check}", LogTypes.ERROR)
         sys.exit(1)
     logger.log("Database connection successful", LogTypes.SUCCESS)
     load_dotenv()
     try:
-        asyncio.run(create_database())
-        asyncio.run(load_extensions())
+        await create_database()
+        await load_extensions()
         logger.log("Starting Bot...", LogTypes.SYSTEM)
         TOKEN = os.getenv('TOKEN')  # Ensure that the TOKEN is loaded from the environment variables
-        asyncio.run(bot.start(TOKEN))
+        await bot.start(TOKEN)
     except KeyboardInterrupt:
         logger.log("Shutdown signal received", LogTypes.SYSTEM)
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(bot.close())  # Gracefully close the bot
+        await bot.close()  # Gracefully close the bot
         logger.log("Bot has been gracefully shutdown.", LogTypes.SUCCESS)
     except Exception as e:
         logger.log(f"An error occurred: {e}", LogTypes.ERROR)
-    finally:
-        loop.close()  # Close the asyncio loop
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(main())

@@ -28,7 +28,7 @@ class Welcome(commands.Cog):
         # When a member joins a guild
         logger.log(f"Member joined: {member.name}, {member.id} on {member.guild.name}, {member.guild.id}", log_helper.LogTypes.INFO)
         data = database.execute_read_query(f"SELECT * FROM welcome_messages WHERE guild_id = {member.guild.id}")
-        if not welcomeMessage:
+        if not data:
             return
 
         welcomeMessage = data[0][1]
