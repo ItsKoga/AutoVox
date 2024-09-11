@@ -43,10 +43,30 @@ async def on_guild_join(guild):
     # When the bot joins a guild
     logger.log(f"Joined guild: {guild.name}, {guild.id}", LogTypes.INFO)
 
+    guild = bot.get_guild(config.load_value("guild_id"))
+
+    channel = guild.get_channel(config.load_value("log_channel_id"))
+
+    embed = discord.Embed(title="Joined Guild", description=f"{guild.name}, {guild.id}", color=discord.Color.green())
+    embed.set_footer(text="Made with ❤ by the AutoVox team")
+
+    await channel.send(embed=embed)
+
+
+
 @bot.event
 async def on_guild_remove(guild):
     # When the bot leaves a guild
     logger.log(f"Left guild: {guild.name}, {guild.id}", LogTypes.INFO)
+
+    guild = bot.get_guild(config.load_value("guild_id"))
+
+    channel = guild.get_channel(config.load_value("log_channel_id"))
+
+    embed = discord.Embed(title="Left Guild", description=f"{guild.name}, {guild.id}", color=discord.Color.red())
+    embed.set_footer(text="Made with ❤ by the AutoVox team")
+
+    await channel.send(embed=embed)
 
 
 @bot.event

@@ -4,5 +4,7 @@
     "whitelist_limit" : 20,
     "channel_name_limit": 100,
     "channel_user_limit": 99,
-    "auto_threads_limit": 10
+    "auto_threads_limit": 10,
+    "log_channel_id": 1281537505753174068,
+    "guild_id": 1281337470226661449
 }
