@@ -63,5 +63,6 @@
     "welcome_message_title": "Willkommensnachricht",
     "welcome_message_set": "Die Willkommensnachricht wurde festgelegt. Der Kanal ist {channel} und die Nachricht ist {message}.",
     "welcome_message_removed": "Die Willkommensnachricht wurde entfernt.",
-    "welcome_message_not_set": "Die Willkommensnachricht ist nicht festgelegt."
+    "welcome_message_not_set": "Die Willkommensnachricht ist nicht festgelegt.",
+    "custom_channel_deleted": "Der Kanal wurde gelöscht."
 }

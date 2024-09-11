@@ -139,6 +139,31 @@ class Settings(commands.Cog):
         await ctx.response.send_message(embed=embed)
 
 
+    @customChannelsGroup.command(name="force_delete", description="Delete a custom channel from the guild")
+    async def delete(self, ctx, channel: discord.VoiceChannel):
+        # Delete a custom channel from the guild
+        logger.log(f"Deleting custom channel {channel.name}({channel.id}) from {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        data = database.execute_read_query(f"SELECT * FROM custom_channels WHERE channel_id = {channel.id}")
+        if not data:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "custom_channel_title"), description=translation.get_translation(ctx.user.id, "custom_channel_not_found"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        
+        channel = ctx.guild.get_channel(int(data[0][1]))
+        await channel.delete()
+        database.execute_query(f"DELETE FROM custom_channels WHERE channel_id = {channel.id}")
+
+        joinChannel = database.execute_read_query(f"SELECT * FROM join_channels WHERE owner_id = {data[0][0]} AND guild_id = {ctx.guild.id}")
+        if joinChannel:
+            joinChannel = ctx.guild.get_channel(int(joinChannel[0][1]))
+            await joinChannel.delete()
+            database.execute_query(f"DELETE FROM join_channels WHERE owner_id = {data[0][0]} AND guild_id = {ctx.guild.id}")
+
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "custom_channel_title"), description=translation.get_translation(ctx.user.id, "custom_channel_deleted", channel=channel.mention), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
 
     ######################################################
     # Auto Threads

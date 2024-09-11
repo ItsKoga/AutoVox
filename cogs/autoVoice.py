@@ -137,6 +137,8 @@ class AutoVoice(commands.Cog):
                 return
             customChannel = customChannels[customChannelOwners.index(member.id)]
             customChannel = guild.get_channel(customChannel)
+            if not customChannel:
+                return
             if len(customChannel.members) == 0:
                 await customChannel.delete()
                 database.execute_query(f"DELETE FROM custom_channels WHERE owner_id = {member.id}")
