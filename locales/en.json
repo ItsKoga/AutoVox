@@ -59,7 +59,7 @@
     "auto_thread_not_added": "{channel} is not added to auto threads.",
     "auto_thread_removed": "{channel} has been removed from auto threads.",
     "no_auto_threads": "There are no auto threads set.",
-    "auto_threads_list": "The auto threads are: \n{channels}",
+    "auto_threads_list": "The auto threads are: \n{threads}",
     "welcome_message_title": "Welcome message",
     "welcome_message_set": "The welcome message has been set. The Channel is {channel} and the message is {message}.",
     "welcome_message_removed": "The welcome message has been removed.",
