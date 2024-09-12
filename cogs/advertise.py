@@ -27,27 +27,27 @@ class Advertise(commands.Cog):
     async def invite(self, ctx):
         invite_link = config.load_value("invite_link")
 
-        embed = discord.Embed(title=translation.get(ctx.user.id, "invite_title"), description=translation.get(ctx.user.id, "invite_description").format(invite_link=invite_link), color=0x00ff00)
-        embed.set_footer("Made with ❤ by the AutoVox team")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "invite_title"), description=translation.get_translation(ctx.user.id, "invite_description").format(invite_link=invite_link), color=discord.Color.purple())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
 
         await ctx.response.send_message(embed=embed)
 
 
     @slash_command(name="support", description="Get the support server link for the bot")
     async def support(self, ctx):
-        support_link = config.load_value("support_link")
+        support_link = config.load_value("discord_link")
 
-        embed = discord.Embed(title=translation.get(ctx.user.id, "support_title"), description=translation.get(ctx.user.id, "support_description").format(discord_link=support_link), color=0x00ff00)
-        embed.set_footer("Made with ❤ by the AutoVox team")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "support_title"), description=translation.get_translation(ctx.user.id, "support_description").format(discord_link=support_link), color=discord.Color.purple())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
 
         await ctx.response.send_message(embed=embed)
 
     @slash_command(name="server", description="Get the server link for the bot")
     async def server(self, ctx):
-        support_link = config.load_value("support_link")
+        support_link = config.load_value("discord_link")
 
-        embed = discord.Embed(title=translation.get(ctx.user.id, "support_title"), description=translation.get(ctx.user.id, "support_title").format(discord_link=support_link), color=0x00ff00)
-        embed.set_footer("Made with ❤ by the AutoVox team")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "server_title"), description=translation.get_translation(ctx.user.id, "server_description").format(discord_link=support_link), color=discord.Color.purple())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
 
         await ctx.response.send_message(embed=embed)
 
