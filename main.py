@@ -47,7 +47,7 @@ async def on_guild_join(guild):
 
     channel = ownGuild.get_channel(config.load_value("log_channel_id"))
 
-    embed = discord.Embed(title="Joined Guild", description=f"{guild.name}, {guild.id}", color=discord.Color.green())
+    embed = discord.Embed(title="Joined Guild", description=f"{guild.name}, {guild.id} members: {guild.member_count}", color=discord.Color.green())
     embed.set_footer(text="Made with ❤ by the AutoVox team")
 
     await channel.send(embed=embed)
