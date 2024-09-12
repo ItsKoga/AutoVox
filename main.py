@@ -77,7 +77,7 @@ async def on_interaction(interaction):
         return
 
     name = data["name"]
-    option_name = data["options"][0]["name"] if data["options"] else None
+    option_name = data["options"][0]["name"] if "options" in data else None
     logger.log(f"Interaction invoked: {name} {option_name}", LogTypes.USER_ACTION)
 
     # Add the user to the database if they don't exist

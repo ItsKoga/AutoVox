@@ -69,5 +69,9 @@
     "invite_title": "Bot einladen",
     "invite_description": "Laden Sie den Bot zu Ihrem Server ein [hier]({invite_link}).",
     "support_title": "Support-Server",
-    "support_description": "Treten Sie dem Support-Server [hier]({discord_link}) bei."
+    "support_description": "Treten Sie dem Support-Server [hier]({discord_link}) bei.",
+    "stats_title": "Statistiken",
+    "stats_description": "Server : {amountServers}\n Custom Channels : {amountCustomChannels}\n Join Channels : {amountJoinChannels}\n Whitelist Einträge: {amountWhitelist}\n Auto Threads : {amountAutoThreads}",
+    "server_title": "Community Server",
+    "server_description": "Treten dem Community-Server [hier]({discord_link}) bei."
 }

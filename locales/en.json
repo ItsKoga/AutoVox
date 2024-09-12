@@ -69,6 +69,10 @@
     "invite_title": "Invite the bot",
     "invite_description": "Invite the bot to your server [here]({invite_link}).",
     "support_title": "Support Server",
-    "support_description": "Join the support server [here]({discord_link})."
+    "support_description": "Join the support server [here]({discord_link}).",
+    "stats_title": "Stats",
+    "stats_description": "Servers : {amountServers}\n Custom Channels : {amountCustomChannels}\n Join Channels : {amountJoinChannels}\n Whitelist Entries: {amountWhitelist}\n Auto Threads : {amountAutoThreads}",
+    "server_title": "Community Server",
+    "server_description": "Join the community server [here]({discord_link})."
 
 }
