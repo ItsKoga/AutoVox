@@ -65,6 +65,10 @@
     "welcome_message_removed": "The welcome message has been removed.",
     "welcome_message_not_set": "The welcome message is not set.",
     "custom_channel_deleted": "The channel has been deleted.",
-    "custom_channel_not_found": "This is not a valid custom channel."
+    "custom_channel_not_found": "This is not a valid custom channel.",
+    "invite_title": "Invite the bot",
+    "invite_description": "Invite the bot to your server [here]({invite_link}).",
+    "support_title": "Support Server",
+    "support_description": "Join the support server [here]({discord_link})."
 
 }

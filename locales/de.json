@@ -65,5 +65,9 @@
     "welcome_message_removed": "Die Willkommensnachricht wurde entfernt.",
     "welcome_message_not_set": "Die Willkommensnachricht ist nicht festgelegt.",
     "custom_channel_deleted": "Der Kanal wurde gelöscht.",
-    "custom_channel_not_found": "Dies ist kein gültiger benutzerdefinierter Kanal."
+    "custom_channel_not_found": "Dies ist kein gültiger benutzerdefinierter Kanal.",
+    "invite_title": "Bot einladen",
+    "invite_description": "Laden Sie den Bot zu Ihrem Server ein [hier]({invite_link}).",
+    "support_title": "Support-Server",
+    "support_description": "Treten Sie dem Support-Server [hier]({discord_link}) bei."
 }
