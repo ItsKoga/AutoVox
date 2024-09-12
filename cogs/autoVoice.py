@@ -51,7 +51,10 @@ class AutoVoice(commands.Cog):
                     guildsList[guild]["join"].append(int(channel[1]))
 
         for guildToCheck in guildsList:
-            guild = self.bot.get_guild(int(guildToCheck))
+            try:
+                guild = self.bot.get_guild(int(guildToCheck))
+            except:
+                continue
             logger.log(f"Checking channels in {guild.name}({guild.id})", log_helper.LogTypes.INFO)
             channels = guild.voice_channels
             channelIds = [channel.id for channel in channels]
