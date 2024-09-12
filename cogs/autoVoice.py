@@ -103,8 +103,10 @@ class AutoVoice(commands.Cog):
             return
         
         guild = member.guild
-        createChannel = int(database.execute_read_query(f"SELECT * FROM settings WHERE guild_id = {member.guild.id} AND setting_name = 'create_channel'")[0][2])
-        createChannel = guild.get_channel(createChannel)
+        createChannel = int(database.execute_read_query(f"SELECT * FROM settings WHERE guild_id = {member.guild.id} AND setting_name = 'create_channel'"))
+        if not createChannel:
+            return
+        createChannel = guild.get_channel(createChannel[0][2])
 
         requestChannel = int(database.execute_read_query(f"SELECT * FROM settings WHERE guild_id = {member.guild.id} AND setting_name = 'request_channel'")[0][2])
         requestChannel = guild.get_channel(requestChannel)
