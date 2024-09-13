@@ -73,5 +73,15 @@
     "stats_title": "Statistiken",
     "stats_description": "Server : {amountServers}\n Custom Channels : {amountCustomChannels}\n Join Channels : {amountJoinChannels}\n Whitelist Einträge: {amountWhitelist}\n Auto Threads : {amountAutoThreads}",
     "server_title": "Community Server",
-    "server_description": "Treten dem Community-Server [hier]({discord_link}) bei."
+    "server_description": "Treten dem Community-Server [hier]({discord_link}) bei.",
+    "auto_reaction": "Auto Reaktion",
+    "auto_reaction_invalid_emoji": "Dies ist keine gültige Emoji.",
+    "auto_reaction_already_added": "Diese Emoji ist bereits eine Auto-Reaktion.",
+    "auto_reactions_limit_reached": "Das Limit der Auto-Reaktionen wurde erreicht. Du kannst nur {limit} Auto-Reaktionen haben.",
+    "auto_reaction_not_text_channel": "Dies ist kein Textkanal.",
+    "auto_reaction_added": "{emoji} wurde als Auto-Reaktion zu {channel} hinzugefügt.",
+    "auto_reaction_not_added": "{channel} hat keine Auto-Reaktionen",
+    "auto_reaction_removed": "Alle Auto-Reaktionen von {channel} entfernt.",
+    "no_auto_reactions": "Es sind keine Auto-Reaktionen festgelegt.",
+    "auto_reactions_list": "Die Auto-Reaktionen sind: \n{reactions}"
 }

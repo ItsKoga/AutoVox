@@ -8,5 +8,6 @@
     "log_channel_id": 1281537505753174068,
     "guild_id": 1281337470226661449,
     "invite_link": "https://discord.com/oauth2/authorize?client_id=1281554625744470127&permissions=8&integration_type=0&scope=bot",
-    "discord_link": "https://discord.gg/3hDpnuuBJA"
+    "discord_link": "https://discord.gg/3hDpnuuBJA",
+    "auto_reactions_limit": 20
 }

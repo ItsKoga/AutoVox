@@ -73,6 +73,16 @@
     "stats_title": "Stats",
     "stats_description": "Servers : {amountServers}\n Custom Channels : {amountCustomChannels}\n Join Channels : {amountJoinChannels}\n Whitelist Entries: {amountWhitelist}\n Auto Threads : {amountAutoThreads}",
     "server_title": "Community Server",
-    "server_description": "Join the community server [here]({discord_link})."
+    "server_description": "Join the community server [here]({discord_link}).",
+    "auto_reaction": "Auto Reaction",
+    "auto_reaction_invalid_emoji": "This is not a valid emoji.",
+    "auto_reaction_already_added": "This emoji is already an auto reaction.",
+    "auto_reactions_limit_reached": "The limit of auto reactions has been reached. You can only have {limit} auto reactions.",
+    "auto_reaction_not_text_channel": "This is not a text channel.",
+    "auto_reaction_added": "{emoji} has been added as an auto reaction to {channel}.",
+    "auto_reaction_not_added": "{channel} has no auto reactions",
+    "auto_reaction_removed": "Removed all auto reactions from {channel}.",
+    "no_auto_reactions": "There are no auto reactions set.",
+    "auto_reactions_list": "The auto reactions are: \n{reactions}"
 
 }

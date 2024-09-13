@@ -8,6 +8,8 @@ import asyncio
 
 import os
 
+import emoji as em
+
 import log_helper
 
 import translation
@@ -306,6 +308,106 @@ class Settings(commands.Cog):
         channel = database.execute_read_query(f"SELECT * FROM welcome_channels WHERE guild_id = {ctx.guild.id}")
         channel = ctx.guild.get_channel(int(channel[0][1]))
         embed = discord.Embed(title=welcomeTitle, description=welcomeMessage, color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+
+    ######################################################
+    # Auto Reactions
+    ######################################################
+
+    autoReactionsGroup = SlashCommandGroup(name="auto_reactions", description="Manage the bot's settings", contexts=[ict.guild], default_member_permissions=discord.Permissions(administrator=True))
+
+    @autoReactionsGroup.command(name="add", description="Add an auto reaction to the guild")
+    async def add(self, ctx, channel: discord.TextChannel, emoji: str):
+        emoji = emoji.replace(" ", "")
+        if ":" not in emoji and em.is_emoji(emoji[1:]):
+            emoji = emoji[:1]
+            emoji = em.demojize(emoji)
+        elif ":" in emoji:
+            emoji = "<"+emoji.split("<")[1]
+            name = emoji.split(":")[1]
+            emoji = discord.utils.get(ctx.guild.emojis, name=name)
+            if not emoji:
+                embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_invalid_emoji"), color=discord.Color.red())
+                embed.set_footer(text="Made with ❤ by the AutoVox team")
+                await ctx.response.send_message(embed=embed)
+                return
+            emoji = name
+        else:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_invalid_emoji"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+
+
+        # Check if the emoji is already an auto reaction in that channel
+        if database.execute_read_query(f"SELECT * FROM auto_reactions WHERE guild_id={ctx.guild.id} AND channel_id={channel.id} AND reaction='{emoji}'"):
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_already_added"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Check if the auto reaction limit has been reached
+        if len(database.execute_read_query(f"SELECT * FROM auto_reactions WHERE guild_id={ctx.guild.id}")) >= config.load_value("auto_reactions_limit"):
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reactions"), description=translation.get_translation(ctx.user.id, "auto_reactions_limit_reached", limit=config.load_value("auto_reactions_limit")), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Check if the Channel is a Text Channel
+        if not channel.type == discord.ChannelType.text:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_not_text_channel"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Add an auto reaction to the guild
+        logger.log(f"Adding auto reaction {channel.name}({channel.id}) to {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        # Use parameterized queries to prevent SQL injection and handle special characters
+        database.execute_query(
+            "INSERT INTO auto_reactions (guild_id, channel_id, reaction) VALUES (%s, %s, %s)",
+            (ctx.guild.id, channel.id, emoji)
+        )
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_added", channel=channel.mention, emoji=emoji), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+
+        await ctx.response.send_message(embed=embed)
+
+    @autoReactionsGroup.command(name="remove", description="Remove an auto reaction from the guild")
+    async def remove(self, ctx, channel: discord.TextChannel):
+        # Check if the channel is not an auto reaction
+        if not database.execute_read_query(f"SELECT * FROM auto_reactions WHERE guild_id={ctx.guild.id} AND channel_id={channel.id}"):
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_not_added", channel=channel.mention), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        # Remove an auto reaction from the guild
+        logger.log(f"Removing auto reaction {channel.name}({channel.id}) from {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        database.execute_query(f"DELETE FROM auto_reactions WHERE guild_id={ctx.guild.id} AND channel_id={channel.id}")
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reaction_removed", channel=channel.mention), color=discord.Color.green())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
+        await ctx.response.send_message(embed=embed)
+
+    @autoReactionsGroup.command(name="list", description="List all auto reactions in the guild")
+    async def list(self, ctx):
+        # List all auto reactions in the guild
+        logger.log(f"Listing auto reactions in {ctx.guild.name}({ctx.guild.id}) by {ctx.user.name}({ctx.user.id})", log_helper.LogTypes.INFO)
+        reactions = database.execute_read_query(f"SELECT channel_id, reaction FROM auto_reactions WHERE guild_id={ctx.guild.id}")
+        if not reactions:
+            embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "no_auto_reactions"), color=discord.Color.red())
+            embed.set_footer(text="Made with ❤ by the AutoVox team")
+            await ctx.response.send_message(embed=embed)
+            return
+        reaction_mentions = []
+        for reaction in reactions:
+            if em.is_emoji(em.emojize(reaction[1])):
+                reaction_mentions.append(f"<#{reaction[0]}>" + " - " + em.emojize(reaction[1]))
+            else:
+                emoji = discord.utils.get(ctx.guild.emojis, name=reaction[1])
+                if emoji:
+                    reaction_mentions.append(f"<#{reaction[0]}>" + " - " + str(emoji))
+                else:
+                    reaction_mentions.append(f"<#{reaction[0]}>" + " - " + reaction[1])
+
+        embed = discord.Embed(title=translation.get_translation(ctx.user.id, "auto_reaction"), description=translation.get_translation(ctx.user.id, "auto_reactions_list", reactions="\n".join(reaction_mentions)), color=discord.Color.green())
         embed.set_footer(text="Made with ❤ by the AutoVox team")
         await ctx.response.send_message(embed=embed)
 
