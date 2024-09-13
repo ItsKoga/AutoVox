@@ -31,8 +31,12 @@ class Admin(commands.Cog):
     async def guilds(self, ctx):
         guilds = self.bot.guilds
 
-        embed = discord.Embed(title="Guilds", description=f"The bot is in {len(guilds)} guilds", color=0x00ff00)
-        embed.set_footer("Made with ❤ by the AutoVox team")
+        guilds = sorted(guilds, key=lambda x: x.member_count, reverse=True)
+        guilds = guilds[:10]
+
+        embed = discord.Embed(title="Guilds", description=f"The bot is in {len(guilds)} guilds", color=discord.Color.purple())
+        embed.add_field(name="Top 10 Guilds", value="\n".join([f"{guild.name} - {guild.id} - {guild.member_count} members" for guild in guilds]), inline=False)
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
 
         await ctx.response.send_message(embed=embed)
 
@@ -67,15 +71,27 @@ class Admin(commands.Cog):
 
 
     @admin_group.command(name="guild", description="Get the guild")
-    async def guild(self, ctx, guild_id: int):
-        guild = self.bot.get_guild(guild_id)
+    async def guild(self, ctx, guild_id: discord.Option(str, "The guild ID", min_length=19, max_length=19)): # type: ignore
+        guild = int(guild_id)
+        logger.log(f"Get guild: {guild}", log_helper.LogTypes.INFO)
+        try:
+            guild = self.bot.get_guild(guild)
+        except Exception as e:
+            logger.log(f"Error getting guild: {e}", log_helper.LogTypes.ERROR)
+            await ctx.response.send_message("Error getting guild")
 
         if guild is None:
             await ctx.response.send_message("Guild not found")
+            logger.log(f"Guild not found: {guild}", log_helper.LogTypes.ERROR)
             return
+        
+        logger.log(f"Guild found: {guild}", log_helper.LogTypes.INFO)
 
-        embed = discord.Embed(title="Guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention}({guild.owner.id})\nMembers: {guild.member_count}", color=0x00ff00)
-        embed.set_footer("Made with ❤ by the AutoVox team")
+        embed = discord.Embed(title="Guild", description=f"**Name:** {guild.name}\n\
+                              **ID:** {guild.id}\n\
+                              **Owner:** {guild.owner.mention}({guild.owner.id})\n\
+                              **Members:** {guild.member_count}", color=discord.Color.purple())
+        embed.set_footer(text="Made with ❤ by the AutoVox team")
 
         await ctx.response.send_message(embed=embed)
 
