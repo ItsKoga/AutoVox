@@ -1,3 +1,4 @@
 py-cord==2.6.0
 python-dotenv==1.0.0
 mysql-connector-python==8.2.0
+emoji==2.8.0
