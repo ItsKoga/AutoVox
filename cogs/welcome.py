@@ -26,7 +26,7 @@ class Welcome(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         # When a member joins a guild
-        logger.log(f"Member joined: {member.name}, {member.id} on {member.guild.name}, {member.guild.id}", log_helper.LogTypes.INFO)
+        logger.log(f"Member joined: {member.name}, {member.id} on {member.guild.name}, {member.guild.id}", log_helper.LogTypes.USER_ACTION)
         data = database.execute_read_query(f"SELECT * FROM welcome_messages WHERE guild_id = {member.guild.id}")
         if not data:
             return

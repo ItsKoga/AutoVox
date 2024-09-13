@@ -21,10 +21,10 @@ class StandardRoles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        # When a member joins the guild
-        logger.log(f"Member joined: {member.name}({member.id}) on {member.guild.name}({member.guild.id})", log_helper.LogTypes.USER_ACTION)
         # Get the guild's standard roles
         standardRoles = database.execute_read_query(f"SELECT * FROM standard_roles WHERE guild_id = {member.guild.id}")
+        if not standardRoles:
+            return
         # load all standard roles for the guild
         standardRoles = [role[1] for role in standardRoles]
         guild = member.guild
