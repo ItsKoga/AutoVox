@@ -27,7 +27,7 @@ class Help(commands.Cog):
     @slash_command(name="help", description="Shows the help menu")
     async def help(self, ctx):
         embed = discord.Embed(title=translation.get_translation(ctx.author.id, "help_title"), description=translation.get_translation(ctx.author.id, "help_description", documentation_link=config.load_value("website_url")+"/docs", discord_link=config.load_value("discord_link")), color=0x9c59b6)
-        embed.set_thumbnail(url=self.bot.user.default_avatar.url)
+        embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         embed.set_footer(text="Made with ❤ by the AutoVox team")
 
         class MyView(discord.ui.View):
