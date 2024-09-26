@@ -83,6 +83,10 @@
     "auto_reaction_not_added": "{channel} has no auto reactions",
     "auto_reaction_removed": "Removed all auto reactions from {channel}.",
     "no_auto_reactions": "There are no auto reactions set.",
-    "auto_reactions_list": "The auto reactions are: \n{reactions}"
-
+    "auto_reactions_list": "The auto reactions are: \n{reactions}",
+    "vote_title": "✨ Thank You for Voting! ✨",
+    "vote_description": "Your vote means a lot to us and helps **AutoVox** continue to improve and serve your community better! 🙌\n\nWe truly appreciate your support in making **AutoVox** the best bot it can be. If you have any feedback or ideas for new features, feel free to share them with us!\n\nThanks again, and enjoy using **AutoVox**! 😊",
+    "help_title": "Help",
+    "help_description": "You can find the documentation [here]({documentation_link}). If you need further help, you can join the support server [here]({discord_link}).",
+    "wiki_button": "Wiki"
 }

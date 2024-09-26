@@ -134,6 +134,7 @@ async def create_database():
     database.execute_query("CREATE TABLE IF NOT EXISTS welcome_messages (guild_id BIGINT, message TEXT, title TEXT)")
     database.execute_query("CREATE TABLE IF NOT EXISTS welcome_channels (guild_id BIGINT, channel_id BIGINT)")
     database.execute_query("CREATE TABLE IF NOT EXISTS auto_reactions (guild_id BIGINT, channel_id BIGINT, reaction TEXT)")
+    database.execute_query("CREATE TABLE IF NOT EXISTS stats (id INT PRIMARY KEY AUTO_INCREMENT, users BIGINT, servers BIGINT, commands BIGINT, time BIGINT)")
     logger.log("Database is ready", LogTypes.SUCCESS)
 
 
