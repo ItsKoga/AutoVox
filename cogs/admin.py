@@ -31,10 +31,11 @@ class Admin(commands.Cog):
     async def guilds(self, ctx):
         guilds = self.bot.guilds
 
+        embed = discord.Embed(title="Guilds", description=f"The bot is in {len(guilds)} guilds", color=discord.Color.purple())
+        
         guilds = sorted(guilds, key=lambda x: x.member_count, reverse=True)
         guilds = guilds[:10]
 
-        embed = discord.Embed(title="Guilds", description=f"The bot is in {len(guilds)} guilds", color=discord.Color.purple())
         embed.add_field(name="Top 10 Guilds", value="\n".join([f"{guild.name} - {guild.id} - {guild.member_count} members" for guild in guilds]), inline=False)
         embed.set_footer(text="Made with ❤ by the AutoVox team")
 
