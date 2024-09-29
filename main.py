@@ -78,7 +78,7 @@ async def on_interaction(interaction):
 
     name = data["name"]
     option_name = data["options"][0]["name"] if "options" in data else None
-    logger.log(f"Interaction invoked: {name} {option_name}", LogTypes.USER_ACTION)
+    logger.log(f"Interaction invoked by {interaction.user.id}: {name} {option_name}", LogTypes.USER_ACTION)
 
     # Add the user to the database if they don't exist
     if not database.execute_read_query(f"SELECT * FROM users WHERE id = {interaction.user.id}"):

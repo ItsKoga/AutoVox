@@ -76,9 +76,7 @@ class Stats(commands.Cog):
 
         response = requests.post(url, json=body, headers=headers)
 
-        if response.status_code == 200:
-            logger.log("Successfully updated bot stats on top.gg", log_helper.LogTypes.SUCCESS)
-        else:
+        if response.status_code != 200:
             logger.log(f"Failed to update bot stats on top.gg: {response.text}", log_helper.LogTypes.ERROR)
 
 
