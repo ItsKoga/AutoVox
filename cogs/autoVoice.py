@@ -24,10 +24,6 @@ class AutoVoice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        self.kuma.start()
-
     @tasks.loop(seconds=60)
     async def kuma(self):
         requests.get(os.getenv("KUMA_AUTO_VOICE_URL"))
@@ -35,6 +31,7 @@ class AutoVoice(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+        self.kuma.start()
         # Check all channels in the database and delete them if they don't exist in the guild
         logger.log("Checking all channels in the database", log_helper.LogTypes.INFO)
         customChannels = database.execute_read_query("SELECT * FROM custom_channels")

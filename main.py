@@ -30,7 +30,7 @@ async def on_ready():
     logger.log("Bot is online!", LogTypes.SUCCESS)
 
 @tasks.loop(seconds=60)
-async def kuma(self):
+async def kuma():
     requests.get(os.getenv("KUMA_MAIN_URL"))
 
 
