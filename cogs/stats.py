@@ -54,7 +54,9 @@ class Stats(commands.Cog):
 
             self.bot_stats = self.BotStats(self.bot, amountServers, amountCustomChannels, amountJoinChannels, autoThreads, whitelistEntries)
 
-            database.execute_query(f"INSERT INTO stats (users, servers, commands, time) VALUES ({len(self.bot.users)}, {amountServers}, {len(self.bot.commands)}, {tm.time()})")
+            amountCommands = len(self.bot.application_commands)
+
+            database.execute_query(f"INSERT INTO stats (users, servers, commands, time) VALUES ({len(self.bot.users)}, {amountServers}, {amountCommands}, {tm.time()})")
             
         except Exception as e:
             logger.log(f"Failed to update stats: {e}", log_helper.LogTypes.ERROR)
