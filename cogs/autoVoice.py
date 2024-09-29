@@ -24,6 +24,7 @@ class AutoVoice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.Cog.listener()
     def on_ready(self):
         self.kuma.start()
 
