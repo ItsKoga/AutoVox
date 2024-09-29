@@ -54,7 +54,12 @@ class Stats(commands.Cog):
 
             self.bot_stats = self.BotStats(self.bot, amountServers, amountCustomChannels, amountJoinChannels, autoThreads, whitelistEntries)
 
-            amountCommands = len(self.bot.application_commands)
+            amountCommands = 0
+            for command in self.bot.application_commands:
+                if isinstance(command, SlashCommandGroup):
+                    amountCommands += len(command.subcommands)
+                else:
+                    amountCommands += 1
 
             database.execute_query(f"INSERT INTO stats (users, servers, commands, time) VALUES ({len(self.bot.users)}, {amountServers}, {amountCommands}, {tm.time()})")
             
