@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 import asyncio
 import os
+import requests
 import sys	
 
 from mysql.connector import Error
@@ -25,7 +26,12 @@ logger = log_helper.Logger("Main")
 async def on_ready():
     # Set bot's presence
     await bot.change_presence(activity=discord.Game(name="AutoVox"), status=discord.Status.online)
+    kuma.start()
     logger.log("Bot is online!", LogTypes.SUCCESS)
+
+@tasks.loop(seconds=60)
+async def kuma(self):
+    requests.get(os.getenv("KUMA_MAIN_URL"))
 
 
 @bot.event
