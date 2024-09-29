@@ -20,7 +20,7 @@ class StandardRoles(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    def on_ready(self):
+    async def on_ready(self):
         self.kuma.start()
 
     @tasks.loop(seconds=60)

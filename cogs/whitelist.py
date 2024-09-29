@@ -25,7 +25,7 @@ class Whitelist(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener()
-    def on_ready(self):
+    async def on_ready(self):
         self.kuma.start()
 
 
