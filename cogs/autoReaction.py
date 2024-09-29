@@ -7,6 +7,7 @@ import time as tm
 import asyncio
 
 import os
+import requests
 
 import emoji as em
 
@@ -24,6 +25,13 @@ logger = log_helper.Logger("AutoReaction")
 class AutoReaction(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    def on_ready(self):
+        self.kuma.start()
+
+    @tasks.loop(seconds=60)
+    async def kuma(self):
+        requests.get(os.getenv("KUMA_AUTO_REACTION_URL"))
 
     @commands.Cog.listener()
     async def on_message(self, message):

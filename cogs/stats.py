@@ -29,6 +29,11 @@ class Stats(commands.Cog):
     async def on_ready(self):
         self.update_stats_loop.start()
         self.update_topgg_stats_loop.start()
+        self.kuma.start()
+
+    @tasks.loop(seconds=60)
+    async def kuma(self):
+        requests.get(os.getenv("KUMA_STATS_URL"))
 
     class BotStats(commands.Cog):
         def __init__(self, bot, amountServers, amountCustomChannels, amountJoinChannels, autoThreads, whitelistEntries):

@@ -24,6 +24,13 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    def on_ready(self):
+        self.kuma.start()
+
+    @tasks.loop(seconds=60)
+    async def kuma(self):
+        requests.get(os.getenv("KUMA_HELP_URL"))
+
     @slash_command(name="help", description="Shows the help menu")
     async def help(self, ctx):
         embed = discord.Embed(title=translation.get_translation(ctx.author.id, "help_title"), description=translation.get_translation(ctx.author.id, "help_description", documentation_link=config.load_value("website_url")+"/docs", discord_link=config.load_value("discord_link")), color=0x9c59b6)

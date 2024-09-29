@@ -7,6 +7,7 @@ import time as tm
 import asyncio
 
 import os
+import requests
 
 import log_helper
 
@@ -22,6 +23,14 @@ logger = log_helper.Logger("Advertise")
 class Advertise(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.kuma.start()
+
+    @tasks.loop(seconds=60)
+    async def kuma(self):
+        requests.get(os.getenv("KUMA_ADVERTISE_URL"))
 
     @slash_command(name="invite", description="Get the invite link for the bot")
     async def invite(self, ctx):

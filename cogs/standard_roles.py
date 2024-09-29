@@ -7,6 +7,7 @@ import time as tm
 import asyncio
 
 import os
+import requests
 
 import log_helper
 
@@ -17,6 +18,13 @@ logger = log_helper.Logger("StandardRoles")
 class StandardRoles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    def on_ready(self):
+        self.kuma.start()
+
+    @tasks.loop(seconds=60)
+    async def kuma(self):
+        requests.get(os.getenv("KUMA_STANDARD_ROLES_URL"))
 
 
     @commands.Cog.listener()
