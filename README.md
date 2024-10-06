@@ -40,7 +40,7 @@ python bot.py
 Make sure the bot is invited to your Discord server with the proper permissions. You can generate an invite link using the Discord Developer Portal.
 
 ### Contribution
-Feel free to contribute to the project! Please submit a pull request with a detailed description of the changes.
+Feel free to contribute to the project! Please submit a pull request with a detailed description of the changes. See the [CONTRIBUTING file](https://github.com/ItsKoga/AutoVox/blob/main/CONTRIBUTING.md) for details.
 
 ### License
 This project is licensed under the MIT License (with modifications). See the [LICENSE file](https://github.com/ItsKoga/AutoVox/blob/main/LICENSE) for details.
